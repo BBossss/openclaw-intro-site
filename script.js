@@ -40,7 +40,7 @@ const sceneData = [
   { type: 'personal', zh: '自动整理长文并提炼重点', en: 'Summarize long docs into key points' }
 ];
 
-const newsData = [
+const defaultNewsData = [
   {
     tag: 'Release',
     zh: '发布 v2026.3.2：最新稳定版上线。',
@@ -77,6 +77,8 @@ const newsData = [
     url: 'https://github.com/openclaw/openclaw/issues/35789'
   }
 ];
+
+let newsData = [...defaultNewsData];
 
 let lang = localStorage.getItem('oc_lang') || 'zh';
 const langToggle = document.getElementById('langToggle');
@@ -118,6 +120,83 @@ function renderNews() {
       <a href="${n.url}" target="_blank" rel="noreferrer">${lang === 'zh' ? '查看详情' : 'Read more'}</a>
     </article>
   `).join('');
+}
+
+const short = (s, n = 88) => (s && s.length > n ? `${s.slice(0, n - 1)}…` : s || '');
+const dateOnly = (d) => (d ? new Date(d).toISOString().slice(0, 10) : '');
+
+async function refreshNewsFromGitHub() {
+  try {
+    const base = 'https://api.github.com/repos/openclaw/openclaw';
+    const [releasesRes, commitsRes, issuesRes] = await Promise.all([
+      fetch(`${base}/releases?per_page=2`),
+      fetch(`${base}/commits?per_page=2`),
+      fetch(`${base}/issues?state=open&per_page=10`)
+    ]);
+
+    if (!releasesRes.ok || !commitsRes.ok || !issuesRes.ok) throw new Error('github-api-failed');
+
+    const releases = await releasesRes.json();
+    const commits = await commitsRes.json();
+    const issuesRaw = await issuesRes.json();
+    const hotIssue = issuesRaw.find((x) => !x.pull_request) || issuesRaw[0];
+
+    const fresh = [];
+    if (releases[0]) {
+      fresh.push({
+        tag: 'Release',
+        zh: `发布 ${releases[0].tag_name}：${short(releases[0].name || '最新版本')}`,
+        en: `Released ${releases[0].tag_name}: ${short(releases[0].name || 'latest version')}`,
+        date: dateOnly(releases[0].published_at),
+        url: releases[0].html_url
+      });
+    }
+    if (commits[0]) {
+      const msg = String(commits[0].commit?.message || '').split('\n')[0];
+      fresh.push({
+        tag: 'Commit',
+        zh: `最新提交：${short(msg)}`,
+        en: `Latest commit: ${short(msg)}`,
+        date: dateOnly(commits[0].commit?.author?.date),
+        url: commits[0].html_url
+      });
+    }
+    if (releases[1]) {
+      fresh.push({
+        tag: 'Release',
+        zh: `近期版本：${releases[1].tag_name}`,
+        en: `Recent release: ${releases[1].tag_name}`,
+        date: dateOnly(releases[1].published_at),
+        url: releases[1].html_url
+      });
+    }
+    if (commits[1]) {
+      const msg2 = String(commits[1].commit?.message || '').split('\n')[0];
+      fresh.push({
+        tag: 'Commit',
+        zh: `近期提交：${short(msg2)}`,
+        en: `Recent commit: ${short(msg2)}`,
+        date: dateOnly(commits[1].commit?.author?.date),
+        url: commits[1].html_url
+      });
+    }
+    if (hotIssue) {
+      fresh.push({
+        tag: 'Hot Issue',
+        zh: `社区热议：${short(hotIssue.title)}`,
+        en: `Community focus: ${short(hotIssue.title)}`,
+        date: dateOnly(hotIssue.created_at),
+        url: hotIssue.html_url
+      });
+    }
+
+    if (fresh.length >= 3) {
+      newsData = fresh.slice(0, 5);
+      renderNews();
+    }
+  } catch {
+    // fallback to defaultNewsData silently
+  }
 }
 
 function renderGenCmd() {
@@ -176,3 +255,5 @@ const theme = localStorage.getItem('oc_theme');
 if (theme === 'light') { document.body.classList.add('light'); themeToggle.textContent = '☀️'; }
 
 renderLang();
+refreshNewsFromGitHub();
+setInterval(refreshNewsFromGitHub, 30 * 60 * 1000);
