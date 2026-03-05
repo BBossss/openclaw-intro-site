@@ -9,6 +9,7 @@ const i18n = {
     cmpTitle: '和普通聊天 AI 的区别', cmpH1: '能力项', cmpH3: '普通聊天 AI', cmp1k: '文件读写与执行', cmp2k: '浏览器自动化', cmp3k: '跨渠道消息触达', cmp4k: '可审计工作流',
     sceneTitle: '按场景看能力', sceneAll: '全部', sceneDev: '开发', sceneOps: '运营', scenePersonal: '个人效率',
     demoTitle: '真实 Demo 场景', d1: '“抓取一个网页 → 总结重点 → 发到 Telegram”', d2: '“读代码仓库 → 修 Bug → 跑测试 → 提交 PR”', d3: '“每天早上自动汇总待办、天气和日历”',
+    liveTitle: 'Live Console Demo', replay: '重播', flowTitle: 'Workflow Visualizer', playTitle: 'Prompt Playground', playScene: '场景', playChannel: '渠道',
     quickStart: '30 秒上手', copy: '复制', copied: '已复制', generatorTitle: '命令生成器', genLabel: '选择渠道：',
     roadmapTitle: 'Roadmap', r1: '多渠道连接与基础工具执行', r2: '技能市场与模板化工作流', r3: '多 Agent 协作与质量门禁',
     testimonialTitle: '他们怎么说', t1: '“以前是 AI 提建议，现在是 AI 直接帮我把事做完。”', t2: '“把重复工作自动化后，我每天能省 1~2 小时。”', t3: '“最香的是可扩展，今天能用，明天还能进化。”',
@@ -24,6 +25,7 @@ const i18n = {
     cmpTitle: 'How it differs from chat-only AI', cmpH1: 'Capability', cmpH3: 'Chat-only AI', cmp1k: 'Read/write & execute', cmp2k: 'Browser automation', cmp3k: 'Cross-channel delivery', cmp4k: 'Auditable workflows',
     sceneTitle: 'Capabilities by Scenario', sceneAll: 'All', sceneDev: 'Development', sceneOps: 'Operations', scenePersonal: 'Personal Productivity',
     demoTitle: 'Real Demo Scenarios', d1: '“Fetch a webpage → summarize → send to Telegram”', d2: '“Read repo → fix bug → run tests → open PR”', d3: '“Daily digest of todos, weather, and calendar”',
+    liveTitle: 'Live Console Demo', replay: 'Replay', flowTitle: 'Workflow Visualizer', playTitle: 'Prompt Playground', playScene: 'Scenario', playChannel: 'Channel',
     quickStart: '30-sec Quick Start', copy: 'Copy', copied: 'Copied', generatorTitle: 'Command Generator', genLabel: 'Choose channel:',
     roadmapTitle: 'Roadmap', r1: 'Multi-channel integration + tool execution', r2: 'Skill marketplace + workflow templates', r3: 'Multi-agent collaboration + quality gates',
     testimonialTitle: 'What builders say', t1: '“AI used to suggest; now it actually completes work for me.”', t2: '“Automation saves me 1–2 hours every day.”', t3: '“Best part: it evolves with my workflow.”',
@@ -89,6 +91,12 @@ const copyBtn = document.getElementById('copyCmd');
 const copyGenBtn = document.getElementById('copyGenCmd');
 const channelSelect = document.getElementById('channelSelect');
 const menuToggle = document.getElementById('menuToggle');
+const liveConsole = document.getElementById('liveConsole');
+const replayConsole = document.getElementById('replayConsole');
+const playSceneSelect = document.getElementById('playSceneSelect');
+const playChannelSelect = document.getElementById('playChannelSelect');
+const playPrompt = document.getElementById('playPrompt');
+const copyPlayPrompt = document.getElementById('copyPlayPrompt');
 
 function renderLang() {
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
@@ -102,6 +110,7 @@ function renderLang() {
   renderStatus();
   renderNews();
   renderGenCmd();
+  renderPlayPrompt();
 }
 
 function renderScenes(type = 'all') {
@@ -231,6 +240,67 @@ function renderGenCmd() {
     : `Summarize this webpage and send it to ${channel}, then give me 3 action items.`;
 }
 
+const demoLines = {
+  zh: [
+    '> 接收任务: 总结 openclaw 更新并发送 Telegram',
+    '> 规划: web_fetch + summarize + message.send',
+    '> 执行 web_fetch ... done',
+    '> 生成摘要 ... done',
+    '> 发送消息到 Telegram ... done',
+    '> ✅ 任务完成，用时 8.2s'
+  ],
+  en: [
+    '> Received task: summarize OpenClaw updates and send to Telegram',
+    '> Plan: web_fetch + summarize + message.send',
+    '> Running web_fetch ... done',
+    '> Generating summary ... done',
+    '> Sending message to Telegram ... done',
+    '> ✅ Completed in 8.2s'
+  ]
+};
+
+function runConsoleDemo() {
+  if (!liveConsole) return;
+  const lines = demoLines[lang] || demoLines.zh;
+  liveConsole.textContent = '';
+  let i = 0;
+  const timer = setInterval(() => {
+    liveConsole.textContent += `${lines[i]}\n`;
+    i += 1;
+    if (i >= lines.length) clearInterval(timer);
+  }, 420);
+}
+
+function animateFlow() {
+  const nodes = Array.from(document.querySelectorAll('#flowGraph .flow-node'));
+  if (!nodes.length) return;
+  let idx = 0;
+  setInterval(() => {
+    nodes.forEach((n) => n.classList.remove('active'));
+    nodes[idx % nodes.length].classList.add('active');
+    idx += 1;
+  }, 900);
+}
+
+function renderPlayPrompt() {
+  if (!playPrompt) return;
+  const scene = playSceneSelect?.value || 'code';
+  const channel = playChannelSelect?.value || 'Telegram';
+  const map = {
+    zh: {
+      code: `帮我修复这个仓库的测试失败，提交修复说明并把结果发到 ${channel}。`,
+      summary: `帮我抓取这个网页并总结成 5 条重点，然后发到 ${channel}。`,
+      daily: `每天早上 9 点汇总待办、日历和天气，并推送到 ${channel}。`
+    },
+    en: {
+      code: `Fix failing tests in this repo, summarize changes, and send the result to ${channel}.`,
+      summary: `Fetch this webpage, extract 5 key points, and send them to ${channel}.`,
+      daily: `Every morning at 9:00, summarize todos, calendar, and weather, then send to ${channel}.`
+    }
+  };
+  playPrompt.textContent = map[lang][scene];
+}
+
 langToggle.addEventListener('click', () => { lang = lang === 'zh' ? 'en' : 'zh'; renderLang(); });
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('light');
@@ -239,6 +309,9 @@ themeToggle.addEventListener('click', () => {
   localStorage.setItem('oc_theme', isLight ? 'light' : 'dark');
 });
 channelSelect?.addEventListener('change', renderGenCmd);
+playSceneSelect?.addEventListener('change', renderPlayPrompt);
+playChannelSelect?.addEventListener('change', renderPlayPrompt);
+replayConsole?.addEventListener('click', runConsoleDemo);
 
 document.getElementById('sceneFilters')?.addEventListener('click', (e) => {
   const btn = e.target.closest('.chip');
@@ -274,6 +347,7 @@ async function copyText(text, btn) {
 }
 copyBtn?.addEventListener('click', () => copyText(document.getElementById('quickCmd')?.innerText || '', copyBtn));
 copyGenBtn?.addEventListener('click', () => copyText(document.getElementById('genCmd')?.innerText || '', copyGenBtn));
+copyPlayPrompt?.addEventListener('click', () => copyText(playPrompt?.innerText || '', copyPlayPrompt));
 
 const observer = new IntersectionObserver((entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('visible')), { threshold: 0.08 });
 document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
@@ -294,5 +368,7 @@ const theme = localStorage.getItem('oc_theme');
 if (theme === 'light') { document.body.classList.add('light'); themeToggle.textContent = '☀️'; }
 
 renderLang();
+runConsoleDemo();
+animateFlow();
 refreshNewsFromGitHub();
 setInterval(refreshNewsFromGitHub, 30 * 60 * 1000);

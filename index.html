@@ -54,6 +54,48 @@
     </header>
 
     <main>
+      <section id="live-demo" class="section container reveal">
+        <h2 data-i18n="liveTitle">Live Console Demo</h2>
+        <div class="panel terminal">
+          <div class="terminal-head"><span></span><span></span><span></span><code>openclaw run --demo</code></div>
+          <pre id="liveConsole" class="terminal-body"></pre>
+          <button id="replayConsole" class="btn ghost small" data-i18n="replay">重播</button>
+        </div>
+      </section>
+
+      <section id="workflow" class="section container reveal">
+        <h2 data-i18n="flowTitle">Workflow Visualizer</h2>
+        <div class="flow" id="flowGraph">
+          <div class="flow-node active">Input</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Router</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Tools</div>
+          <div class="flow-arrow">→</div>
+          <div class="flow-node">Output</div>
+        </div>
+      </section>
+
+      <section id="playground" class="section container reveal">
+        <h2 data-i18n="playTitle">Prompt Playground</h2>
+        <div class="panel playground">
+          <label data-i18n="playScene">场景</label>
+          <select id="playSceneSelect">
+            <option value="code">修复代码问题</option>
+            <option value="summary">总结网页并推送</option>
+            <option value="daily">生成每日简报</option>
+          </select>
+          <label data-i18n="playChannel">渠道</label>
+          <select id="playChannelSelect">
+            <option>Telegram</option>
+            <option>Discord</option>
+            <option>WhatsApp</option>
+          </select>
+          <pre><code id="playPrompt">帮我修复这个仓库的测试失败并把结果发到 Telegram。</code></pre>
+          <button id="copyPlayPrompt" class="btn ghost small" data-i18n="copy">复制</button>
+        </div>
+      </section>
+
       <section id="features" class="section container reveal">
         <h2 data-i18n="whyTitle">为什么用 OpenClaw</h2>
         <div class="grid">
