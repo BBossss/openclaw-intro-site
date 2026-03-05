@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenClaw - 让 AI 不止会回答，还能执行</title>
+    <meta name="description" content="OpenClaw 是可扩展的 AI Agent Runtime，让助手连接真实工具并交付结果。" />
+
+    <meta property="og:title" content="OpenClaw - AI Agent Runtime" />
+    <meta property="og:description" content="让 AI 助手连接工具、执行任务、交付结果。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://opengraph.githubassets.com/1/openclaw/openclaw" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OpenClaw - AI Agent Runtime" />
+    <meta name="twitter:description" content="让 AI 不止会回答，还能执行。" />
+
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='50'%3E%F0%9F%90%88%E2%80%8D%E2%AC%9B%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="nav container">
+        <div class="logo">OpenClaw</div>
+        <div class="nav-actions">
+          <button id="langToggle" class="btn ghost small">EN</button>
+          <button id="themeToggle" class="btn ghost small">🌙</button>
+          <a class="btn ghost small" href="https://docs.openclaw.ai" target="_blank" rel="noreferrer" data-i18n="docs">文档</a>
+        </div>
+      </nav>
+
+      <section class="hero-content container reveal">
+        <p class="badge" data-i18n="badge">AI Agent Runtime</p>
+        <h1 data-i18n="heroTitle">让 AI 不止会回答，<span>还能执行</span></h1>
+        <p class="subtitle" data-i18n="heroSubtitle">OpenClaw 让你的 AI 助手连接真实工具：文件、浏览器、消息、自动化工作流，从“对话”升级到“交付结果”。</p>
+        <div class="cta-group">
+          <a class="btn" href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer" data-i18n="ctaGithub">查看 GitHub</a>
+          <a class="btn ghost" href="https://docs.openclaw.ai" target="_blank" rel="noreferrer" data-i18n="ctaStart">快速开始</a>
+          <a class="btn ghost" href="#demo" data-i18n="ctaDemo">看 Demo</a>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section class="section container reveal">
+        <h2 data-i18n="whyTitle">为什么用 OpenClaw</h2>
+        <div class="grid">
+          <article class="card"><h3 data-i18n="f1t">工具可执行</h3><p data-i18n="f1d">支持文件读写、Shell、Browser 自动化、消息发送等，真正把任务做完。</p></article>
+          <article class="card"><h3 data-i18n="f2t">可扩展技能</h3><p data-i18n="f2d">通过 Skills 把常用能力沉淀为可复用工作流，越用越聪明。</p></article>
+          <article class="card"><h3 data-i18n="f3t">多渠道连接</h3><p data-i18n="f3d">可接 Telegram / Discord / WhatsApp 等，让助手在你常用场景里工作。</p></article>
+          <article class="card"><h3 data-i18n="f4t">开发者友好</h3><p data-i18n="f4d">本地优先、可观测、可审计，适合个人和团队持续迭代。</p></article>
+        </div>
+      </section>
+
+      <section id="demo" class="section alt reveal">
+        <div class="container two-col">
+          <div>
+            <h2 data-i18n="demoTitle">真实 Demo 场景</h2>
+            <ul class="list">
+              <li data-i18n="d1">“抓取一个网页 → 总结重点 → 发到 Telegram”</li>
+              <li data-i18n="d2">“读代码仓库 → 修 Bug → 跑测试 → 提交 PR”</li>
+              <li data-i18n="d3">“每天早上自动汇总待办、天气和日历”</li>
+            </ul>
+          </div>
+          <div class="panel">
+            <p class="code-title" data-i18n="quickStart">30 秒上手</p>
+            <pre><code>openclaw gateway start
+openclaw status
+# 然后在聊天里：
+# "帮我总结这个网页并发到 Telegram"</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="section container reveal">
+        <h2 data-i18n="faqTitle">FAQ</h2>
+        <div class="faq">
+          <details><summary data-i18n="q1">OpenClaw 适合谁？</summary><p data-i18n="a1">适合想让 AI 从“能聊”升级到“能干活”的开发者、个人创作者和小团队。</p></details>
+          <details><summary data-i18n="q2">需要写很多代码吗？</summary><p data-i18n="a2">不一定。你可以先用现成 Skills，再逐步扩展自己的自动化流程。</p></details>
+          <details><summary data-i18n="q3">支持哪些渠道？</summary><p data-i18n="a3">可连接 Telegram、Discord、WhatsApp 等常见消息渠道。</p></details>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>Built with ❤️ for AI builders · OpenClaw</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
