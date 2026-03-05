@@ -1,10 +1,11 @@
 const i18n = {
   zh: {
-    navFeatures: '能力', navComparison: '对比', navScenes: '场景', navFaq: 'FAQ', docs: '文档', badge: 'AI Agent Runtime',
+    navFeatures: '能力', navNews: '动态', navComparison: '对比', navScenes: '场景', navFaq: 'FAQ', docs: '文档', badge: 'AI Agent Runtime',
     heroTitle: '让 AI 不止会回答，<span>还能执行</span>', heroSubtitle: 'OpenClaw 让你的 AI 助手连接真实工具：文件、浏览器、消息、自动化工作流，从“对话”升级到“交付结果”。',
     s1: '+ 工具能力', s2: '+ 常见渠道', s3: '% 可扩展', ctaGithub: '查看 GitHub', ctaStart: '快速开始', ctaDemo: '看 Demo',
     whyTitle: '为什么用 OpenClaw', f1t: '工具可执行', f1d: '支持文件读写、Shell、Browser 自动化、消息发送等，真正把任务做完。',
     f2t: '可扩展技能', f2d: '通过 Skills 把常用能力沉淀为可复用工作流，越用越聪明。', f3t: '多渠道连接', f3d: '可接 Telegram / Discord / WhatsApp 等，让助手在你常用场景里工作。', f4t: '开发者友好', f4d: '本地优先、可观测、可审计，适合个人和团队持续迭代。',
+    newsTitle: 'OpenClaw 热门动态', newsMeta: '来源：GitHub Releases / Commits / Issues',
     cmpTitle: '和普通聊天 AI 的区别', cmpH1: '能力项', cmpH3: '普通聊天 AI', cmp1k: '文件读写与执行', cmp2k: '浏览器自动化', cmp3k: '跨渠道消息触达', cmp4k: '可审计工作流',
     sceneTitle: '按场景看能力', sceneAll: '全部', sceneDev: '开发', sceneOps: '运营', scenePersonal: '个人效率',
     demoTitle: '真实 Demo 场景', d1: '“抓取一个网页 → 总结重点 → 发到 Telegram”', d2: '“读代码仓库 → 修 Bug → 跑测试 → 提交 PR”', d3: '“每天早上自动汇总待办、天气和日历”',
@@ -14,11 +15,12 @@ const i18n = {
     faqTitle: 'FAQ', q1: 'OpenClaw 适合谁？', a1: '适合想让 AI 从“能聊”升级到“能干活”的开发者、个人创作者和小团队。', q2: '需要写很多代码吗？', a2: '不一定。你可以先用现成 Skills，再逐步扩展自己的自动化流程。', q3: '支持哪些渠道？', a3: '可连接 Telegram、Discord、WhatsApp 等常见消息渠道。'
   },
   en: {
-    navFeatures: 'Features', navComparison: 'Comparison', navScenes: 'Scenarios', navFaq: 'FAQ', docs: 'Docs', badge: 'AI Agent Runtime',
+    navFeatures: 'Features', navNews: 'News', navComparison: 'Comparison', navScenes: 'Scenarios', navFaq: 'FAQ', docs: 'Docs', badge: 'AI Agent Runtime',
     heroTitle: 'AI that doesn\'t just answer,<span> but executes</span>', heroSubtitle: 'OpenClaw connects your AI assistant to real tools: files, browser, messaging, and automation workflows — upgrading from chat to delivery.',
     s1: '+ tool capabilities', s2: '+ common channels', s3: '% extensible', ctaGithub: 'View GitHub', ctaStart: 'Quick Start', ctaDemo: 'See Demo',
     whyTitle: 'Why OpenClaw', f1t: 'Executable Tools', f1d: 'Real actions with files, shell, browser automation, and messaging.',
     f2t: 'Extensible Skills', f2d: 'Package recurring workflows as reusable skills.', f3t: 'Multi-channel', f3d: 'Connect Telegram, Discord, WhatsApp, and more.', f4t: 'Developer Friendly', f4d: 'Local-first, observable, auditable, and iteration-ready.',
+    newsTitle: 'OpenClaw Trending Updates', newsMeta: 'Source: GitHub Releases / Commits / Issues',
     cmpTitle: 'How it differs from chat-only AI', cmpH1: 'Capability', cmpH3: 'Chat-only AI', cmp1k: 'Read/write & execute', cmp2k: 'Browser automation', cmp3k: 'Cross-channel delivery', cmp4k: 'Auditable workflows',
     sceneTitle: 'Capabilities by Scenario', sceneAll: 'All', sceneDev: 'Development', sceneOps: 'Operations', scenePersonal: 'Personal Productivity',
     demoTitle: 'Real Demo Scenarios', d1: '“Fetch a webpage → summarize → send to Telegram”', d2: '“Read repo → fix bug → run tests → open PR”', d3: '“Daily digest of todos, weather, and calendar”',
@@ -38,6 +40,44 @@ const sceneData = [
   { type: 'personal', zh: '自动整理长文并提炼重点', en: 'Summarize long docs into key points' }
 ];
 
+const newsData = [
+  {
+    tag: 'Release',
+    zh: '发布 v2026.3.2：最新稳定版上线。',
+    en: 'Released v2026.3.2: latest stable version is live.',
+    date: '2026-03-03',
+    url: 'https://github.com/openclaw/openclaw/releases/tag/v2026.3.2'
+  },
+  {
+    tag: 'Core Update',
+    zh: 'ACP 新增 Discord/Telegram 持久会话绑定能力。',
+    en: 'ACP added persistent session bindings for Discord/Telegram.',
+    date: '2026-03-05',
+    url: 'https://github.com/openclaw/openclaw/commit/6a705a37f2cf856a6237eac430210859914f67d7'
+  },
+  {
+    tag: 'TTS',
+    zh: 'OpenAI TTS 配置新增 baseUrl 支持。',
+    en: 'OpenAI TTS config now supports baseUrl.',
+    date: '2026-03-05',
+    url: 'https://github.com/openclaw/openclaw/commit/2c8ee593b97213c6f72892fe56761d285aac5e26'
+  },
+  {
+    tag: 'Docs',
+    zh: 'Telegram 单用户机器人建议启用 allowlist 配置。',
+    en: 'Docs now recommend allowlist for single-user Telegram bots.',
+    date: '2026-03-05',
+    url: 'https://github.com/openclaw/openclaw/commit/c522154771efa94c0524b856475f77e45ca04672'
+  },
+  {
+    tag: 'Hot Issue',
+    zh: '社区关注：dmScope=main 时 Telegram 回复广播异常。',
+    en: 'Hot issue: Telegram replies broadcast unexpectedly when dmScope=main.',
+    date: '2026-03-05',
+    url: 'https://github.com/openclaw/openclaw/issues/35789'
+  }
+];
+
 let lang = localStorage.getItem('oc_lang') || 'zh';
 const langToggle = document.getElementById('langToggle');
 const themeToggle = document.getElementById('themeToggle');
@@ -54,6 +94,7 @@ function renderLang() {
   langToggle.textContent = lang === 'zh' ? 'EN' : '中';
   localStorage.setItem('oc_lang', lang);
   renderScenes(document.querySelector('.chip.active')?.dataset.scene || 'all');
+  renderNews();
   renderGenCmd();
 }
 
@@ -62,6 +103,21 @@ function renderScenes(type = 'all') {
   if (!container) return;
   const filtered = type === 'all' ? sceneData : sceneData.filter((x) => x.type === type);
   container.innerHTML = filtered.map((x) => `<article class="card"><p>${lang === 'zh' ? x.zh : x.en}</p></article>`).join('');
+}
+
+function renderNews() {
+  const container = document.getElementById('newsCards');
+  if (!container) return;
+  container.innerHTML = newsData.map((n) => `
+    <article class="card news-card">
+      <div class="row-between">
+        <span class="news-tag">${n.tag}</span>
+        <small class="news-date">${n.date}</small>
+      </div>
+      <p>${lang === 'zh' ? n.zh : n.en}</p>
+      <a href="${n.url}" target="_blank" rel="noreferrer">${lang === 'zh' ? '查看详情' : 'Read more'}</a>
+    </article>
+  `).join('');
 }
 
 function renderGenCmd() {
