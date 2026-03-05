@@ -19,9 +19,15 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="hero">
+    <header class="hero" id="top">
       <nav class="nav container">
         <div class="logo">OpenClaw</div>
+        <div class="nav-links">
+          <a href="#features" data-i18n="navFeatures">能力</a>
+          <a href="#comparison" data-i18n="navComparison">对比</a>
+          <a href="#demo" data-i18n="navDemo">Demo</a>
+          <a href="#faq" data-i18n="navFaq">FAQ</a>
+        </div>
         <div class="nav-actions">
           <button id="langToggle" class="btn ghost small">EN</button>
           <button id="themeToggle" class="btn ghost small">🌙</button>
@@ -33,6 +39,13 @@
         <p class="badge" data-i18n="badge">AI Agent Runtime</p>
         <h1 data-i18n="heroTitle">让 AI 不止会回答，<span>还能执行</span></h1>
         <p class="subtitle" data-i18n="heroSubtitle">OpenClaw 让你的 AI 助手连接真实工具：文件、浏览器、消息、自动化工作流，从“对话”升级到“交付结果”。</p>
+
+        <div class="stats">
+          <div><strong data-count="20">0</strong><span data-i18n="s1">+ 工具能力</span></div>
+          <div><strong data-count="8">0</strong><span data-i18n="s2">+ 常见渠道</span></div>
+          <div><strong data-count="100">0</strong><span data-i18n="s3">% 可扩展</span></div>
+        </div>
+
         <div class="cta-group">
           <a class="btn" href="https://github.com/openclaw/openclaw" target="_blank" rel="noreferrer" data-i18n="ctaGithub">查看 GitHub</a>
           <a class="btn ghost" href="https://docs.openclaw.ai" target="_blank" rel="noreferrer" data-i18n="ctaStart">快速开始</a>
@@ -42,7 +55,7 @@
     </header>
 
     <main>
-      <section class="section container reveal">
+      <section id="features" class="section container reveal">
         <h2 data-i18n="whyTitle">为什么用 OpenClaw</h2>
         <div class="grid">
           <article class="card"><h3 data-i18n="f1t">工具可执行</h3><p data-i18n="f1d">支持文件读写、Shell、Browser 自动化、消息发送等，真正把任务做完。</p></article>
@@ -52,7 +65,23 @@
         </div>
       </section>
 
-      <section id="demo" class="section alt reveal">
+      <section id="comparison" class="section alt reveal">
+        <div class="container">
+          <h2 data-i18n="cmpTitle">和普通聊天 AI 的区别</h2>
+          <div class="comparison-grid">
+            <div class="cmp-head" data-i18n="cmpH1">能力项</div>
+            <div class="cmp-head">OpenClaw</div>
+            <div class="cmp-head" data-i18n="cmpH3">普通聊天 AI</div>
+
+            <div data-i18n="cmp1k">文件读写与执行</div><div>✅</div><div>⚠️ 仅建议</div>
+            <div data-i18n="cmp2k">浏览器自动化</div><div>✅</div><div>❌</div>
+            <div data-i18n="cmp3k">跨渠道消息触达</div><div>✅</div><div>❌</div>
+            <div data-i18n="cmp4k">可审计工作流</div><div>✅</div><div>⚠️ 有限</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" class="section reveal">
         <div class="container two-col">
           <div>
             <h2 data-i18n="demoTitle">真实 Demo 场景</h2>
@@ -63,8 +92,11 @@
             </ul>
           </div>
           <div class="panel">
-            <p class="code-title" data-i18n="quickStart">30 秒上手</p>
-            <pre><code>openclaw gateway start
+            <div class="row-between">
+              <p class="code-title" data-i18n="quickStart">30 秒上手</p>
+              <button id="copyCmd" class="btn ghost small" data-i18n="copy">复制</button>
+            </div>
+            <pre><code id="quickCmd">openclaw gateway start
 openclaw status
 # 然后在聊天里：
 # "帮我总结这个网页并发到 Telegram"</code></pre>
@@ -73,6 +105,15 @@ openclaw status
       </section>
 
       <section class="section container reveal">
+        <h2 data-i18n="testimonialTitle">他们怎么说</h2>
+        <div class="grid">
+          <article class="card quote"><p data-i18n="t1">“以前是 AI 提建议，现在是 AI 直接帮我把事做完。”</p><span>— Builder A</span></article>
+          <article class="card quote"><p data-i18n="t2">“把重复工作自动化后，我每天能省 1~2 小时。”</p><span>— Developer B</span></article>
+          <article class="card quote"><p data-i18n="t3">“最香的是可扩展，今天能用，明天还能进化。”</p><span>— Indie Hacker C</span></article>
+        </div>
+      </section>
+
+      <section id="faq" class="section container reveal">
         <h2 data-i18n="faqTitle">FAQ</h2>
         <div class="faq">
           <details><summary data-i18n="q1">OpenClaw 适合谁？</summary><p data-i18n="a1">适合想让 AI 从“能聊”升级到“能干活”的开发者、个人创作者和小团队。</p></details>
@@ -87,6 +128,8 @@ openclaw status
         <p>Built with ❤️ for AI builders · OpenClaw</p>
       </div>
     </footer>
+
+    <a href="#top" class="to-top" aria-label="Back to top">↑</a>
 
     <script src="script.js"></script>
   </body>
