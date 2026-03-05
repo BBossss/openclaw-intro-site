@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>OpenClaw - 让 AI 不止会回答，还能执行</title>
     <meta name="description" content="OpenClaw 是可扩展的 AI Agent Runtime，让助手连接真实工具并交付结果。" />
-
     <meta property="og:title" content="OpenClaw - AI Agent Runtime" />
     <meta property="og:description" content="让 AI 助手连接工具、执行任务、交付结果。" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="https://opengraph.githubassets.com/1/openclaw/openclaw" />
-
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="OpenClaw - AI Agent Runtime" />
     <meta name="twitter:description" content="让 AI 不止会回答，还能执行。" />
-
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='50'%3E%F0%9F%90%88%E2%80%8D%E2%AC%9B%3C/text%3E%3C/svg%3E" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -25,7 +22,7 @@
         <div class="nav-links">
           <a href="#features" data-i18n="navFeatures">能力</a>
           <a href="#comparison" data-i18n="navComparison">对比</a>
-          <a href="#demo" data-i18n="navDemo">Demo</a>
+          <a href="#scenes" data-i18n="navScenes">场景</a>
           <a href="#faq" data-i18n="navFaq">FAQ</a>
         </div>
         <div class="nav-actions">
@@ -72,13 +69,23 @@
             <div class="cmp-head" data-i18n="cmpH1">能力项</div>
             <div class="cmp-head">OpenClaw</div>
             <div class="cmp-head" data-i18n="cmpH3">普通聊天 AI</div>
-
             <div data-i18n="cmp1k">文件读写与执行</div><div>✅</div><div>⚠️ 仅建议</div>
             <div data-i18n="cmp2k">浏览器自动化</div><div>✅</div><div>❌</div>
             <div data-i18n="cmp3k">跨渠道消息触达</div><div>✅</div><div>❌</div>
             <div data-i18n="cmp4k">可审计工作流</div><div>✅</div><div>⚠️ 有限</div>
           </div>
         </div>
+      </section>
+
+      <section id="scenes" class="section container reveal">
+        <h2 data-i18n="sceneTitle">按场景看能力</h2>
+        <div class="chip-group" id="sceneFilters">
+          <button class="chip active" data-scene="all" data-i18n="sceneAll">全部</button>
+          <button class="chip" data-scene="dev" data-i18n="sceneDev">开发</button>
+          <button class="chip" data-scene="ops" data-i18n="sceneOps">运营</button>
+          <button class="chip" data-scene="personal" data-i18n="scenePersonal">个人效率</button>
+        </div>
+        <div class="grid" id="sceneCards"></div>
       </section>
 
       <section id="demo" class="section reveal">
@@ -105,6 +112,29 @@ openclaw status
       </section>
 
       <section class="section container reveal">
+        <h2 data-i18n="generatorTitle">命令生成器</h2>
+        <div class="panel generator">
+          <label data-i18n="genLabel">选择渠道：</label>
+          <select id="channelSelect">
+            <option>Telegram</option>
+            <option>Discord</option>
+            <option>WhatsApp</option>
+          </select>
+          <pre><code id="genCmd">帮我总结这个网页并发到 Telegram</code></pre>
+          <button id="copyGenCmd" class="btn ghost small" data-i18n="copy">复制</button>
+        </div>
+      </section>
+
+      <section class="section container reveal">
+        <h2 data-i18n="roadmapTitle">Roadmap</h2>
+        <div class="timeline">
+          <div><span>v1</span><p data-i18n="r1">多渠道连接与基础工具执行</p></div>
+          <div><span>v2</span><p data-i18n="r2">技能市场与模板化工作流</p></div>
+          <div><span>v3</span><p data-i18n="r3">多 Agent 协作与质量门禁</p></div>
+        </div>
+      </section>
+
+      <section class="section container reveal">
         <h2 data-i18n="testimonialTitle">他们怎么说</h2>
         <div class="grid">
           <article class="card quote"><p data-i18n="t1">“以前是 AI 提建议，现在是 AI 直接帮我把事做完。”</p><span>— Builder A</span></article>
@@ -123,14 +153,8 @@ openclaw status
       </section>
     </main>
 
-    <footer class="footer">
-      <div class="container">
-        <p>Built with ❤️ for AI builders · OpenClaw</p>
-      </div>
-    </footer>
-
+    <footer class="footer"><div class="container"><p>Built with ❤️ for AI builders · OpenClaw</p></div></footer>
     <a href="#top" class="to-top" aria-label="Back to top">↑</a>
-
     <script src="script.js"></script>
   </body>
 </html>
