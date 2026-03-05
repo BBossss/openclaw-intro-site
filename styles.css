@@ -145,11 +145,17 @@ body {
 .terminal-head span { width: 9px; height: 9px; border-radius: 50%; background: #4f86ff; display: inline-block; }
 .terminal-head span:nth-child(2) { background: #f6c244; }
 .terminal-head span:nth-child(3) { background: #3ddc84; }
-.terminal-body { min-height: 150px; white-space: pre-wrap; color: #d8e4ff; background: rgba(0,0,0,.24); padding: .8rem; border-radius: 10px; border:1px solid rgba(130,154,214,.2); }
+.terminal-body { min-height: 180px; white-space: pre-wrap; color: #d8e4ff; background: rgba(0,0,0,.24); padding: .8rem; border-radius: 10px; border:1px solid rgba(130,154,214,.2); }
+.demo-select{padding:.45rem .6rem;border-radius:8px;border:1px solid var(--border);background:rgba(10,16,31,.55);color:var(--text)}
+.demo-metrics{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.65rem}
+.demo-metrics span{font-size:.8rem;padding:.22rem .5rem;border-radius:999px;border:1px solid var(--border);color:var(--accent);background:rgba(11,18,35,.55)}
+.demo-result{margin-top:.6rem;padding:.6rem .7rem;border:1px dashed var(--border);border-radius:10px;color:var(--muted);font-size:.9rem}
 .flow { display: flex; align-items: center; gap: .55rem; flex-wrap: wrap; }
 .flow-node { padding: .5rem .75rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); }
 .flow-node.active { color: var(--text); border-color: #4f86ff; background: rgba(79,134,255,.18); box-shadow: 0 0 16px rgba(79,134,255,.25); }
 .flow-arrow { color: var(--muted); }
+#flowDetail{font-size:.92rem;color:var(--muted)}
+#flowDetail h4{margin:.1rem 0 .5rem 0;color:var(--text)}
 .playground, .generator { display: grid; gap: .55rem; }
 .playground select, .generator select { padding: .55rem .6rem; border-radius: 8px; border: 1px solid var(--border); background: rgba(10,16,31,.55); color: var(--text); }
 

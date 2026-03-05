@@ -147,6 +147,10 @@ const channelSelect = document.getElementById('channelSelect');
 const menuToggle = document.getElementById('menuToggle');
 const liveConsole = document.getElementById('liveConsole');
 const replayConsole = document.getElementById('replayConsole');
+const demoScenario = document.getElementById('demoScenario');
+const demoMetrics = document.getElementById('demoMetrics');
+const demoResult = document.getElementById('demoResult');
+const flowDetail = document.getElementById('flowDetail');
 const playSceneSelect = document.getElementById('playSceneSelect');
 const playChannelSelect = document.getElementById('playChannelSelect');
 const playPrompt = document.getElementById('playPrompt');
@@ -301,36 +305,125 @@ function renderGenCmd() {
     : `Summarize this webpage and send it to ${channel}, then give me 3 action items.`;
 }
 
-const demoLines = {
-  zh: [
-    '> 接收任务: 总结 openclaw 更新并发送 Telegram',
-    '> 规划: web_fetch + summarize + message.send',
-    '> 执行 web_fetch ... done',
-    '> 生成摘要 ... done',
-    '> 发送消息到 Telegram ... done',
-    '> ✅ 任务完成，用时 8.2s'
-  ],
-  en: [
-    '> Received task: summarize OpenClaw updates and send to Telegram',
-    '> Plan: web_fetch + summarize + message.send',
-    '> Running web_fetch ... done',
-    '> Generating summary ... done',
-    '> Sending message to Telegram ... done',
-    '> ✅ Completed in 8.2s'
-  ]
+const demoScenarios = {
+  news: {
+    zh: {
+      lines: [
+        '> 任务: 抓取 OpenClaw 热点并推送 Telegram',
+        '> Planner: 生成 5 步执行计划',
+        '> Tool:web_fetch 拉取 7 篇来源 ... done',
+        '> Tool:summarize 压缩成 6 条重点 ... done',
+        '> Tool:message.send 推送到 @ruibin ... done',
+        '> Verifier: 结果完整性通过 (6/6)',
+        '> ✅ 完成，总耗时 9.4s'
+      ],
+      metrics: ['7 sources', '6 highlights', '9.4s'],
+      result: '输出：热点摘要 + 风险标签 + 行动建议已发送。'
+    },
+    en: {
+      lines: [
+        '> Task: fetch OpenClaw trending updates and send to Telegram',
+        '> Planner: generated 5-step execution plan',
+        '> Tool:web_fetch pulled 7 sources ... done',
+        '> Tool:summarize compressed into 6 highlights ... done',
+        '> Tool:message.send delivered to @ruibin ... done',
+        '> Verifier: integrity check passed (6/6)',
+        '> ✅ Completed in 9.4s'
+      ],
+      metrics: ['7 sources', '6 highlights', '9.4s'],
+      result: 'Output: trend digest + risk labels + action items delivered.'
+    }
+  },
+  code: {
+    zh: {
+      lines: [
+        '> 任务: 修复测试失败并提交 PR',
+        '> Planner: 锁定失败用例 3 个',
+        '> Tool:exec 运行测试矩阵 ... done',
+        '> Tool:sessions_spawn(acp) 生成修复 patch ... done',
+        '> Tool:exec 回归测试 42/42 通过',
+        '> Tool:message.send 回传 PR 链接 ... done',
+        '> ✅ 完成，总耗时 3m21s'
+      ],
+      metrics: ['3 failing tests', '42 passed', 'PR opened'],
+      result: '输出：PR #128 + 回归测试报告 + 风险说明。'
+    },
+    en: {
+      lines: [
+        '> Task: fix failing tests and open a PR',
+        '> Planner: identified 3 failing cases',
+        '> Tool:exec ran test matrix ... done',
+        '> Tool:sessions_spawn(acp) generated patch ... done',
+        '> Tool:exec rerun complete 42/42 passed',
+        '> Tool:message.send returned PR link ... done',
+        '> ✅ Completed in 3m21s'
+      ],
+      metrics: ['3 failing tests', '42 passed', 'PR opened'],
+      result: 'Output: PR #128 + regression report + risk notes.'
+    }
+  },
+  daily: {
+    zh: {
+      lines: [
+        '> 任务: 生成晨报并推送',
+        '> Tool:calendar 读取今日行程 ... done',
+        '> Tool:todo-tracker 汇总待办 ... done',
+        '> Tool:weather 获取深圳天气 ... done',
+        '> Tool:message.send 推送晨报到 Telegram ... done',
+        '> ✅ 完成，总耗时 5.7s'
+      ],
+      metrics: ['4 meetings', '11 todos', '29°C'],
+      result: '输出：今日优先级 + 时间块建议 + 风险提醒。'
+    },
+    en: {
+      lines: [
+        '> Task: generate and deliver morning brief',
+        '> Tool:calendar loaded today schedule ... done',
+        '> Tool:todo-tracker summarized todos ... done',
+        '> Tool:weather fetched Shenzhen weather ... done',
+        '> Tool:message.send delivered brief to Telegram ... done',
+        '> ✅ Completed in 5.7s'
+      ],
+      metrics: ['4 meetings', '11 todos', '29°C'],
+      result: 'Output: priorities + time blocks + risk alerts.'
+    }
+  }
 };
 
 function runConsoleDemo() {
   if (!liveConsole) return;
-  const lines = demoLines[lang] || demoLines.zh;
+  const key = demoScenario?.value || 'news';
+  const pack = demoScenarios[key]?.[lang] || demoScenarios.news.zh;
+  const lines = pack.lines;
   liveConsole.textContent = '';
+  if (demoMetrics) demoMetrics.innerHTML = pack.metrics.map((m) => `<span>${m}</span>`).join('');
+  if (demoResult) demoResult.textContent = pack.result;
   let i = 0;
   const timer = setInterval(() => {
     liveConsole.textContent += `${lines[i]}\n`;
     i += 1;
     if (i >= lines.length) clearInterval(timer);
-  }, 420);
+  }, 340);
 }
+
+const flowDescriptions = {
+  zh: [
+    ['Input', '接收自然语言目标，抽取约束与产出格式。'],
+    ['Planner', '拆分任务步骤，分配执行顺序与失败回退策略。'],
+    ['Skill Router', '根据场景匹配可用 skills 与工具。'],
+    ['Tools', '并行执行 web_fetch / exec / message 等工具调用。'],
+    ['Verifier', '校验结果完整性、链接可用性、格式一致性。'],
+    ['Output', '输出可读结论，并推送到目标渠道。']
+  ],
+  en: [
+    ['Input', 'Capture intent, constraints, and expected output format.'],
+    ['Planner', 'Split into executable steps with fallback strategy.'],
+    ['Skill Router', 'Match scenario to available skills and tools.'],
+    ['Tools', 'Run web_fetch / exec / message in parallel where possible.'],
+    ['Verifier', 'Check completeness, links, and output consistency.'],
+    ['Output', 'Return final result and deliver to target channel.']
+  ]
+};
 
 function animateFlow() {
   const nodes = Array.from(document.querySelectorAll('#flowGraph .flow-node'));
@@ -338,9 +431,12 @@ function animateFlow() {
   let idx = 0;
   setInterval(() => {
     nodes.forEach((n) => n.classList.remove('active'));
-    nodes[idx % nodes.length].classList.add('active');
+    const current = nodes[idx % nodes.length];
+    current.classList.add('active');
+    const d = (flowDescriptions[lang] || flowDescriptions.zh)[idx % nodes.length];
+    if (flowDetail) flowDetail.innerHTML = `<h4>${d[0]}</h4><p>${d[1]}</p>`;
     idx += 1;
-  }, 900);
+  }, 1100);
 }
 
 function renderPlayPrompt() {
@@ -372,6 +468,7 @@ themeToggle.addEventListener('click', () => {
 channelSelect?.addEventListener('change', renderGenCmd);
 playSceneSelect?.addEventListener('change', renderPlayPrompt);
 playChannelSelect?.addEventListener('change', renderPlayPrompt);
+demoScenario?.addEventListener('change', runConsoleDemo);
 replayConsole?.addEventListener('click', runConsoleDemo);
 
 document.getElementById('sceneFilters')?.addEventListener('click', (e) => {

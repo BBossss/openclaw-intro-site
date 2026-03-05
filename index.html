@@ -60,22 +60,38 @@
       <section id="live-demo" class="section container reveal">
         <h2 data-i18n="liveTitle">Live Console Demo</h2>
         <div class="panel terminal">
-          <div class="terminal-head"><span></span><span></span><span></span><code>openclaw run --demo</code></div>
+          <div class="row-between">
+            <div class="terminal-head"><span></span><span></span><span></span><code>openclaw run --demo</code></div>
+            <select id="demoScenario" class="demo-select">
+              <option value="news">热点抓取播报</option>
+              <option value="code">自动修复测试并提PR</option>
+              <option value="daily">晨报自动汇总</option>
+            </select>
+          </div>
           <pre id="liveConsole" class="terminal-body"></pre>
+          <div class="demo-metrics" id="demoMetrics"></div>
+          <div class="demo-result" id="demoResult"></div>
           <button id="replayConsole" class="btn ghost small" data-i18n="replay">重播</button>
         </div>
       </section>
 
       <section id="workflow" class="section container reveal">
         <h2 data-i18n="flowTitle">Workflow Visualizer</h2>
-        <div class="flow" id="flowGraph">
-          <div class="flow-node active">Input</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node">Router</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node">Tools</div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node">Output</div>
+        <div class="two-col">
+          <div class="flow" id="flowGraph">
+            <div class="flow-node active">Input</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Planner</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Skill Router</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Tools</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Verifier</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-node">Output</div>
+          </div>
+          <div class="panel" id="flowDetail"></div>
         </div>
       </section>
 
