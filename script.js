@@ -5,7 +5,7 @@ const i18n = {
     s1: '+ 工具能力', s2: '+ 常见渠道', s3: '% 可扩展', ctaGithub: '查看 GitHub', ctaStart: '快速开始', ctaDemo: '看 Demo',
     whyTitle: '为什么用 OpenClaw', f1t: '工具可执行', f1d: '支持文件读写、Shell、Browser 自动化、消息发送等，真正把任务做完。',
     f2t: '可扩展技能', f2d: '通过 Skills 把常用能力沉淀为可复用工作流，越用越聪明。', f3t: '多渠道连接', f3d: '可接 Telegram / Discord / WhatsApp 等，让助手在你常用场景里工作。', f4t: '开发者友好', f4d: '本地优先、可观测、可审计，适合个人和团队持续迭代。',
-    newsTitle: 'OpenClaw 热门动态', newsMeta: '来源：GitHub Releases / Commits / Issues',
+    newsTitle: 'OpenClaw 热门动态', newsMeta: '来源：GitHub Releases / Commits / Issues', newsAll: '全部', statusRelease: '最新版本', statusCommit: '最新提交', statusIssue: '开放问题',
     cmpTitle: '和普通聊天 AI 的区别', cmpH1: '能力项', cmpH3: '普通聊天 AI', cmp1k: '文件读写与执行', cmp2k: '浏览器自动化', cmp3k: '跨渠道消息触达', cmp4k: '可审计工作流',
     sceneTitle: '按场景看能力', sceneAll: '全部', sceneDev: '开发', sceneOps: '运营', scenePersonal: '个人效率',
     demoTitle: '真实 Demo 场景', d1: '“抓取一个网页 → 总结重点 → 发到 Telegram”', d2: '“读代码仓库 → 修 Bug → 跑测试 → 提交 PR”', d3: '“每天早上自动汇总待办、天气和日历”',
@@ -20,7 +20,7 @@ const i18n = {
     s1: '+ tool capabilities', s2: '+ common channels', s3: '% extensible', ctaGithub: 'View GitHub', ctaStart: 'Quick Start', ctaDemo: 'See Demo',
     whyTitle: 'Why OpenClaw', f1t: 'Executable Tools', f1d: 'Real actions with files, shell, browser automation, and messaging.',
     f2t: 'Extensible Skills', f2d: 'Package recurring workflows as reusable skills.', f3t: 'Multi-channel', f3d: 'Connect Telegram, Discord, WhatsApp, and more.', f4t: 'Developer Friendly', f4d: 'Local-first, observable, auditable, and iteration-ready.',
-    newsTitle: 'OpenClaw Trending Updates', newsMeta: 'Source: GitHub Releases / Commits / Issues',
+    newsTitle: 'OpenClaw Trending Updates', newsMeta: 'Source: GitHub Releases / Commits / Issues', newsAll: 'All', statusRelease: 'Latest Release', statusCommit: 'Latest Commit', statusIssue: 'Open Issues',
     cmpTitle: 'How it differs from chat-only AI', cmpH1: 'Capability', cmpH3: 'Chat-only AI', cmp1k: 'Read/write & execute', cmp2k: 'Browser automation', cmp3k: 'Cross-channel delivery', cmp4k: 'Auditable workflows',
     sceneTitle: 'Capabilities by Scenario', sceneAll: 'All', sceneDev: 'Development', sceneOps: 'Operations', scenePersonal: 'Personal Productivity',
     demoTitle: 'Real Demo Scenarios', d1: '“Fetch a webpage → summarize → send to Telegram”', d2: '“Read repo → fix bug → run tests → open PR”', d3: '“Daily digest of todos, weather, and calendar”',
@@ -79,6 +79,8 @@ const defaultNewsData = [
 ];
 
 let newsData = [...defaultNewsData];
+let newsFilter = 'all';
+let statusData = { release: '-', commit: '-', issues: '-' };
 
 let lang = localStorage.getItem('oc_lang') || 'zh';
 const langToggle = document.getElementById('langToggle');
@@ -86,6 +88,7 @@ const themeToggle = document.getElementById('themeToggle');
 const copyBtn = document.getElementById('copyCmd');
 const copyGenBtn = document.getElementById('copyGenCmd');
 const channelSelect = document.getElementById('channelSelect');
+const menuToggle = document.getElementById('menuToggle');
 
 function renderLang() {
   document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
@@ -95,7 +98,8 @@ function renderLang() {
   });
   langToggle.textContent = lang === 'zh' ? 'EN' : '中';
   localStorage.setItem('oc_lang', lang);
-  renderScenes(document.querySelector('.chip.active')?.dataset.scene || 'all');
+  renderScenes(document.querySelector('#sceneFilters .chip.active')?.dataset.scene || 'all');
+  renderStatus();
   renderNews();
   renderGenCmd();
 }
@@ -107,10 +111,21 @@ function renderScenes(type = 'all') {
   container.innerHTML = filtered.map((x) => `<article class="card"><p>${lang === 'zh' ? x.zh : x.en}</p></article>`).join('');
 }
 
+function renderStatus() {
+  const el = document.getElementById('statusCards');
+  if (!el) return;
+  el.innerHTML = `
+    <article class="card"><h3>${i18n[lang].statusRelease}</h3><p>${statusData.release}</p></article>
+    <article class="card"><h3>${i18n[lang].statusCommit}</h3><p>${statusData.commit}</p></article>
+    <article class="card"><h3>${i18n[lang].statusIssue}</h3><p>${statusData.issues}</p></article>
+  `;
+}
+
 function renderNews() {
   const container = document.getElementById('newsCards');
   if (!container) return;
-  container.innerHTML = newsData.map((n) => `
+  const list = newsFilter === 'all' ? newsData : newsData.filter((n) => n.tag === newsFilter);
+  container.innerHTML = list.map((n) => `
     <article class="card news-card">
       <div class="row-between">
         <span class="news-tag">${n.tag}</span>
@@ -139,7 +154,14 @@ async function refreshNewsFromGitHub() {
     const releases = await releasesRes.json();
     const commits = await commitsRes.json();
     const issuesRaw = await issuesRes.json();
-    const hotIssue = issuesRaw.find((x) => !x.pull_request) || issuesRaw[0];
+    const pureIssues = issuesRaw.filter((x) => !x.pull_request);
+    const hotIssue = pureIssues[0] || issuesRaw[0];
+
+    statusData = {
+      release: releases[0]?.tag_name || '-',
+      commit: (commits[0]?.sha || '-').slice(0, 7),
+      issues: String(pureIssues.length || 0)
+    };
 
     const fresh = [];
     if (releases[0]) {
@@ -192,6 +214,7 @@ async function refreshNewsFromGitHub() {
 
     if (fresh.length >= 3) {
       newsData = fresh.slice(0, 5);
+      renderStatus();
       renderNews();
     }
   } catch {
@@ -220,10 +243,26 @@ channelSelect?.addEventListener('change', renderGenCmd);
 document.getElementById('sceneFilters')?.addEventListener('click', (e) => {
   const btn = e.target.closest('.chip');
   if (!btn) return;
-  document.querySelectorAll('.chip').forEach((x) => x.classList.remove('active'));
+  document.querySelectorAll('#sceneFilters .chip').forEach((x) => x.classList.remove('active'));
   btn.classList.add('active');
   renderScenes(btn.dataset.scene);
 });
+
+document.getElementById('newsFilters')?.addEventListener('click', (e) => {
+  const btn = e.target.closest('.chip');
+  if (!btn) return;
+  document.querySelectorAll('#newsFilters .chip').forEach((x) => x.classList.remove('active'));
+  btn.classList.add('active');
+  newsFilter = btn.dataset.news || 'all';
+  renderNews();
+});
+
+menuToggle?.addEventListener('click', () => {
+  document.getElementById('navLinks')?.classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach((a) => a.addEventListener('click', () => {
+  document.getElementById('navLinks')?.classList.remove('open');
+}));
 
 async function copyText(text, btn) {
   try {

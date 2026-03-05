@@ -3,7 +3,8 @@
 body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;background:radial-gradient(1200px 600px at 20% -10%,#1c2c59 0%,var(--bg) 55%);color:var(--text);line-height:1.6;transition:background .3s ease,color .3s ease}
 .container{width:min(1080px,92vw);margin:0 auto}
 .nav{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;position:sticky;top:0;backdrop-filter:blur(6px);z-index:10}
-.logo{font-weight:800;letter-spacing:.4px}.nav-links{display:flex;gap:.8rem}.nav-links a{color:var(--muted);text-decoration:none;font-size:.95rem}.nav-links a:hover{color:var(--text)}.nav-actions{display:flex;gap:.5rem;align-items:center}
+.logo{font-weight:800;letter-spacing:.4px}.menu-toggle{display:none;background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:.3rem .5rem}
+.nav-links{display:flex;gap:.8rem}.nav-links a{color:var(--muted);text-decoration:none;font-size:.95rem}.nav-links a:hover{color:var(--text)}.nav-actions{display:flex;gap:.5rem;align-items:center}
 .hero{padding-bottom:3rem}.hero-content{padding:3rem 0 2rem}.badge{display:inline-block;background:rgba(126,240,198,.12);color:var(--accent);border:1px solid rgba(126,240,198,.35);padding:.2rem .6rem;border-radius:999px;font-size:.85rem}
 h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin:.8rem 0}h1 span{color:var(--primary)}.subtitle{color:var(--muted);max-width:760px;font-size:1.05rem}
 .stats{display:flex;gap:1rem;margin:1rem 0 .2rem;flex-wrap:wrap}.stats div{background:rgba(18,26,51,.55);border:1px solid var(--border);border-radius:12px;padding:.5rem .8rem}.stats strong{font-size:1.1rem;margin-right:.3rem;color:var(--primary)}
@@ -22,6 +23,7 @@ h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.15;margin:.8rem 0}h1 span{colo
 .news-card a:hover{text-decoration:underline}
 pre{margin:0;overflow-x:auto;color:#d8e4ff}
 .comparison-grid{display:grid;grid-template-columns:2fr 1fr 1fr;border:1px solid var(--border);border-radius:12px;overflow:hidden}.comparison-grid>div{padding:.7rem .9rem;border-bottom:1px solid var(--border)}.comparison-grid>div:nth-child(3n+2),.comparison-grid>div:nth-child(3n+3){text-align:center}.comparison-grid .cmp-head{font-weight:700;background:rgba(18,26,51,.9)}
+.status-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin:.8rem 0 1rem}
 .chip-group{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:1rem}.chip{padding:.45rem .75rem;border-radius:999px;background:transparent;border:1px solid var(--border);color:var(--text);cursor:pointer}.chip.active{border-color:#4f86ff;background:rgba(79,134,255,.15)}
 .generator{display:grid;gap:.7rem}.generator select{padding:.55rem .6rem;border-radius:8px;border:1px solid var(--border);background:transparent;color:var(--text)}
 .timeline{display:grid;gap:.8rem}.timeline>div{display:grid;grid-template-columns:52px 1fr;gap:.8rem;align-items:start;padding:.6rem;border:1px solid var(--border);border-radius:10px}.timeline span{display:grid;place-items:center;background:rgba(79,134,255,.2);border:1px solid var(--border);border-radius:8px;font-weight:700}
@@ -30,5 +32,10 @@ pre{margin:0;overflow-x:auto;color:#d8e4ff}
 .to-top{position:fixed;right:18px;bottom:18px;width:36px;height:36px;border-radius:50%;border:1px solid var(--border);color:var(--text);text-decoration:none;display:grid;place-items:center;background:rgba(18,26,51,.75)}
 body.light{--bg:#edf2ff;--card:#fff;--text:#1e2a47;--muted:#516080;--primary:#2f67ff;--accent:#0c9a70;--border:#c8d6ff;background:radial-gradient(1200px 500px at 20% -15%,#cfddff 0%,var(--bg) 55%)}
 body.light .panel{background:#f4f7ff}body.light .alt{background:rgba(221,231,255,.45)}
-@media (max-width:900px){.nav-links{display:none}}
+@media (max-width:900px){
+  .menu-toggle{display:block}
+  .nav{position:relative}
+  .nav-links{display:none;position:absolute;left:0;right:0;top:100%;background:rgba(11,16,32,.96);border:1px solid var(--border);border-radius:10px;padding:.6rem;flex-direction:column}
+  .nav-links.open{display:flex}
+}
 @media (max-width:768px){.two-col{grid-template-columns:1fr}.subtitle{font-size:.98rem}.comparison-grid{grid-template-columns:1.4fr .8fr .8fr;font-size:.92rem}}

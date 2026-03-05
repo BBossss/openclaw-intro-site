@@ -19,7 +19,8 @@
     <header class="hero" id="top">
       <nav class="nav container">
         <div class="logo">OpenClaw</div>
-        <div class="nav-links">
+        <button id="menuToggle" class="menu-toggle" aria-label="menu">☰</button>
+        <div class="nav-links" id="navLinks">
           <a href="#features" data-i18n="navFeatures">能力</a>
           <a href="#news" data-i18n="navNews">动态</a>
           <a href="#comparison" data-i18n="navComparison">对比</a>
@@ -67,6 +68,13 @@
         <div class="row-between">
           <h2 data-i18n="newsTitle">OpenClaw 热门动态</h2>
           <span class="news-meta" data-i18n="newsMeta">来源：GitHub Releases / Commits / Issues</span>
+        </div>
+        <div class="status-grid" id="statusCards"></div>
+        <div class="chip-group" id="newsFilters">
+          <button class="chip active" data-news="all" data-i18n="newsAll">全部</button>
+          <button class="chip" data-news="Release">Release</button>
+          <button class="chip" data-news="Commit">Commit</button>
+          <button class="chip" data-news="Hot Issue">Issue</button>
         </div>
         <div class="grid" id="newsCards"></div>
       </section>
