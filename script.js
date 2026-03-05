@@ -34,12 +34,66 @@ const i18n = {
 };
 
 const sceneData = [
-  { type: 'dev', zh: '自动修复 lint/test 并提交 PR', en: 'Auto-fix lint/test and open a PR' },
-  { type: 'dev', zh: '从 issue 生成实现计划并编码', en: 'Generate plan from issue and implement' },
-  { type: 'ops', zh: '日报自动汇总并推送群聊', en: 'Auto-generate daily digest to group chat' },
-  { type: 'ops', zh: '监控网站变更并告警', en: 'Monitor site changes and alert' },
-  { type: 'personal', zh: '汇总待办+日历+天气早报', en: 'Morning brief: todos + calendar + weather' },
-  { type: 'personal', zh: '自动整理长文并提炼重点', en: 'Summarize long docs into key points' }
+  {
+    type: 'dev',
+    zh: '代码修复闭环：Issue → 修复 → 测试 → PR',
+    en: 'Code fix loop: Issue → Patch → Test → PR',
+    inputZh: '输入：GitHub Issue + 失败日志',
+    inputEn: 'Input: GitHub issue + failing logs',
+    tools: 'read · exec · sessions_spawn(acp) · message',
+    outputZh: '输出：可合并 PR + 测试报告 + 风险点',
+    outputEn: 'Output: merge-ready PR + test report + risk notes'
+  },
+  {
+    type: 'ops',
+    zh: '舆情监控播报：多站点抓取 + 摘要 + 推送',
+    en: 'Trend watch: crawl + summarize + push',
+    inputZh: '输入：关键词 + 来源站点',
+    inputEn: 'Input: keywords + sources',
+    tools: 'web_fetch · web_search · summarize · message',
+    outputZh: '输出：风险标签 + 每日播报卡片',
+    outputEn: 'Output: risk tags + daily briefing card'
+  },
+  {
+    type: 'ops',
+    zh: '运维告警处理：告警 → 诊断 → 执行脚本 → 回传',
+    en: 'Ops alert handling: alert → diagnose → run → report',
+    inputZh: '输入：告警内容 + 主机信息',
+    inputEn: 'Input: alert payload + host info',
+    tools: 'exec · nodes.run · message',
+    outputZh: '输出：处置结果 + 恢复建议',
+    outputEn: 'Output: remediation result + recovery plan'
+  },
+  {
+    type: 'personal',
+    zh: '个人效率晨报：日历/待办/天气/邮件一页汇总',
+    en: 'Morning brief: calendar/todos/weather/email',
+    inputZh: '输入：当天计划',
+    inputEn: 'Input: today plan',
+    tools: 'skills + message + weather',
+    outputZh: '输出：今日优先级 + 时间块建议',
+    outputEn: 'Output: priorities + time-block suggestions'
+  },
+  {
+    type: 'dev',
+    zh: '需求到实现：需求描述 → 任务拆解 → 提交代码',
+    en: 'Spec to code: requirement → tasks → commits',
+    inputZh: '输入：一句话需求',
+    inputEn: 'Input: one-line requirement',
+    tools: 'sessions_spawn(acp) · exec · git',
+    outputZh: '输出：实现代码 + 提交记录 + 验收清单',
+    outputEn: 'Output: implementation + commits + checklist'
+  },
+  {
+    type: 'personal',
+    zh: '知识库问答增强：检索文档 → 回答并附引用',
+    en: 'Knowledge-grounded QA with citations',
+    inputZh: '输入：问题 + 文档链接',
+    inputEn: 'Input: question + doc links',
+    tools: 'feishu_doc · web_fetch · summarize',
+    outputZh: '输出：结构化回答 + 引用来源',
+    outputEn: 'Output: structured answer + citations'
+  }
 ];
 
 const defaultNewsData = [
@@ -117,7 +171,14 @@ function renderScenes(type = 'all') {
   const container = document.getElementById('sceneCards');
   if (!container) return;
   const filtered = type === 'all' ? sceneData : sceneData.filter((x) => x.type === type);
-  container.innerHTML = filtered.map((x) => `<article class="card"><p>${lang === 'zh' ? x.zh : x.en}</p></article>`).join('');
+  container.innerHTML = filtered.map((x) => `
+    <article class="card case-card">
+      <h3>${lang === 'zh' ? x.zh : x.en}</h3>
+      <p class="case-line">${lang === 'zh' ? x.inputZh : x.inputEn}</p>
+      <p class="case-tools"><strong>Tools:</strong> ${x.tools}</p>
+      <p class="case-line">${lang === 'zh' ? x.outputZh : x.outputEn}</p>
+    </article>
+  `).join('');
 }
 
 function renderStatus() {
